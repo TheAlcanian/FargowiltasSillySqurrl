@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -21,13 +22,13 @@ namespace FargowiltasSillySqurrl.NPCs
         public override void SetStaticDefaults() 
         {
             DisplayName.SetDefault("Silly Squrrl");
-	    Main.npcFrameCount[npc.type] = 6;
-	    NPCID.Sets.ExtraFramesCount[npc.type] = 9;
-	    NPCID.Sets.AttackFrameCount[npc.type] = 4;
-	    NPCID.Sets.DangerDetectRange[npc.type] = 700;
-	    NPCID.Sets.AttackType[npc.type] = 0;
-	    NPCID.Sets.AttackTime[npc.type] = 90;
-	    NPCID.Sets.AttackAverageChance[npc.type] = 30;
+	        Main.npcFrameCount[npc.type] = 6;
+	        NPCID.Sets.ExtraFramesCount[npc.type] = 9;
+	        NPCID.Sets.AttackFrameCount[npc.type] = 4;
+	        NPCID.Sets.DangerDetectRange[npc.type] = 700;
+	        NPCID.Sets.AttackType[npc.type] = 0;
+	        NPCID.Sets.AttackTime[npc.type] = 90;
+	        NPCID.Sets.AttackAverageChance[npc.type] = 30;
             NPCID.Sets.HatOffsetY[npc.type] = 4;
         }
 
@@ -35,7 +36,7 @@ namespace FargowiltasSillySqurrl.NPCs
         {
             npc.townNPC = true;
             npc.friendly = true;
-	    npc.width = 50;
+	        npc.width = 50;
             npc.height = 32;
             npc.aiStyle = 7;
             npc.damage = 50;
@@ -160,13 +161,31 @@ namespace FargowiltasSillySqurrl.NPCs
             randomOffset = 2f;
         }	
         public override void AI()
-	{
-	    if (npc.active && Main.bloodMoon && Main.dayTime == false)
 	    {
-		Main.dayTime = false;
-		Main.time = 0;
-		Main.bloodMoon = true;
+	        npc.dontTakeDamage = FargowiltasSillySqurrlWorld.squirrelNight;
 	    }
-	}
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
+        {
+            Texture2D texture2D13 = Main.npcTexture[npc.type];
+            //int num156 = Main.npcTexture[npc.type].Height / Main.npcFrameCount[npc.type]; //ypos of lower right corner of sprite to draw
+            //int y3 = num156 * npc.frame.Y; //ypos of upper left corner of sprite to draw
+            Rectangle rectangle = npc.frame;//new Rectangle(0, y3, texture2D13.Width, num156);
+            Vector2 origin2 = rectangle.Size() / 2f;
+
+            Color color26 = lightColor;
+            color26 = npc.GetAlpha(color26);
+
+            SpriteEffects effects = npc.spriteDirection < 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+
+            Main.spriteBatch.Draw(texture2D13, npc.Center - Main.screenPosition + new Vector2(0f, npc.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(rectangle), npc.GetAlpha(lightColor), npc.rotation, origin2, npc.scale, effects, 0f);
+
+            if (FargowiltasSillySqurrlWorld.squirrelNight)
+            {
+                Texture2D glowmask = ModContent.GetTexture("FargowiltasSillySqurrl/NPCs/SillySqurrl_Glow");
+                Main.spriteBatch.Draw(glowmask, npc.Center - Main.screenPosition + new Vector2(0f, npc.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(rectangle), Color.White, npc.rotation, origin2, npc.scale, effects, 0f);
+            }
+            return false;
+        }
     }
 }

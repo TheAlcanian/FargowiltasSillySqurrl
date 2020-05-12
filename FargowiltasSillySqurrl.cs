@@ -10,16 +10,14 @@ namespace FargowiltasSillySqurrl
 {
 	public class FargowiltasSillySqurrl : Mod
 	{
-		public FargowiltasSillySqurrl()
-	        {
-                        int Timer = 0;
-			Timer++;
-			if (Timer >= 120 && Main.bloodMoon && NPC.AnyNPCs(ModContent.NPCType<SillySqurrl>()) && Main.dayTime == false) {
- 			Main.dayTime = true;
+		/*public FargowiltasSillySqurrl()
+	    {
+			if (!Main.dayTime && Main.bloodMoon && NPC.AnyNPCs(ModContent.NPCType<SillySqurrl>())) {
+ 			Main.dayTime = false;
 			Main.bloodMoon = true;
 			Main.time = 0;
 			Timer = 0;
 			}	
-		}
-        }
+		}*/
+    }
 }

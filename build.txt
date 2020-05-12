@@ -1,0 +1,3 @@
+displayName = [c/FF0000:Fargo's Silly Squrrl]
+author = Shardiech, Fargowiltas
+version = 0.1
